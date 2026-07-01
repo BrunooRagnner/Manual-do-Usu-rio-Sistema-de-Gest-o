@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manual do Usuário – Sistema de Gestão</title>
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f6f9;
+            color: #1e293b;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        /* Cabeçalho */
+        .header {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 i {
+            color: #60a5fa;
+        }
+
+        .header .version {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .header .badge {
+            background: #10b981;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Navegação por abas */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 0 20px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 14px 22px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            color: #0f172a;
+            background: #f1f5f9;
+        }
+
+        .tab-btn.active {
+            color: #2563eb;
+            border-bottom-color: #2563eb;
+            background: white;
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* Conteúdo das abas */
+        .tab-content {
+            display: none;
+            padding: 30px 40px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0f172a;
+        }
+
+        .tab-content h2 i {
+            color: #2563eb;
+        }
+
+        .tab-content .subtitle {
+            color: #64748b;
+            margin-bottom: 24px;
+            font-size: 1rem;
+        }
+
+        .tab-content .card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .tab-content .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tab-content .card h3 i {
+            color: #2563eb;
+        }
+
+        .tab-content .card p, .tab-content .card li {
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        .tab-content .card ul {
+            padding-left: 24px;
+            margin-top: 6px;
+        }
+
+        .tab-content .card ul li {
+            margin-bottom: 4px;
+        }
+
+        .tab-content .screenshot {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin: 16px 0;
+            transition: 0.2s;
+        }
+
+        .tab-content .screenshot img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .tab-content .screenshot .placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+            background: #f1f5f9;
+            border-radius: 8px;
+            min-height: 200px;
+        }
+
+        .tab-content .screenshot .placeholder i {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .tab-content .screenshot .placeholder span {
+            font-size: 0.9rem;
+        }
+
+        .tab-content .screenshot .placeholder .hint {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .badge-module {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .shortcut {
+            background: #1e293b;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-left: 6px;
+        }
+
+        /* Rodapé */
+        .footer {
+            background: #f8fafc;
+            padding: 20px 40px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .tabs {
+                padding: 0 10px;
+                gap: 2px;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+            .tab-btn {
+                padding: 12px 14px;
+                font-size: 0.8rem;
+                white-space: nowrap;
+            }
+            .tab-btn span {
+                display: none;
+            }
+            .tab-btn i {
+                font-size: 1.2rem;
+            }
+            .tab-content {
+                padding: 20px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .tab-content h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .tab-content .card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <h1>
+            <i class="fas fa-book-open"></i>
+            Manual do Usuário
+            <span class="badge">v3.1</span>
+        </h1>
+        <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+            <span class="version"><i class="fas fa-user"></i> Operador de Caixa</span>
+            <span class="version"><i class="fas fa-calendar-alt"></i> Julho 2026</span>
+        </div>
+    </header>
+
+    <!-- Abas (navegação) -->
+    <nav class="tabs" id="tabNav">
+        <button class="tab-btn active" data-tab="intro"><i class="fas fa-home"></i><span>Introdução</span></button>
+        <button class="tab-btn" data-tab="pdv"><i class="fas fa-cash-register"></i><span>PDV</span></button>
+        <button class="tab-btn" data-tab="caixa"><i class="fas fa-money-bill-wave"></i><span>Caixa</span></button>
+        <button class="tab-btn" data-tab="itens"><i class="fas fa-boxes"></i><span>Itens</span></button>
+        <button class="tab-btn" data-tab="pessoas"><i class="fas fa-users"></i><span>Pessoas</span></button>
+        <button class="tab-btn" data-tab="transacoes"><i class="fas fa-file-invoice"></i><span>Transações</span></button>
+        <button class="tab-btn" data-tab="entregas"><i class="fas fa-truck"></i><span>Entregas</span></button>
+        <button class="tab-btn" data-tab="fidelidade"><i class="fas fa-crown"></i><span>Fidelidade</span></button>
+        <button class="tab-btn" data-tab="estoque"><i class="fas fa-warehouse"></i><span>Estoque</span></button>
+        <button class="tab-btn" data-tab="fiados"><i class="fas fa-hand-holding-usd"></i><span>Fiados</span></button>
+        <button class="tab-btn" data-tab="assistente"><i class="fas fa-robot"></i><span>Assistente</span></button>
+    </nav>
+
+    <!-- ==================== CONTEÚDO DAS ABAS ==================== -->
+
+    <!-- ABA 1 – INTRODUÇÃO -->
+    <section id="intro" class="tab-content active">
+        <h2><i class="fas fa-home"></i> Introdução</h2>
+        <p class="subtitle">Bem-vindo ao Sistema de Gestão Universal. Este manual explica cada funcionalidade do sistema, com foco no operador de caixa.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-sign-in-alt"></i> Acesso ao Sistema</h3>
+            <ul>
+                <li>Abra o navegador e acesse a URL fornecida pela administração.</li>
+                <li>Informe seu <strong>e-mail</strong> e <strong>senha</strong>.</li>
+                <li>Clique em <strong>Entrar</strong>.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira aqui a captura de tela da tela de login</span>
+                    <span class="hint">Substitua esta div por uma imagem real: <code>&lt;img src="caminho/login.png" alt="Login" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-th-list"></i> Menu Principal</h3>
+            <p>O menu lateral contém todos os módulos. As funções mais usadas são <strong>PDV</strong> e <strong>Caixa</strong>.</p>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira aqui a captura de tela do menu lateral</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/menu.png" alt="Menu" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABA 2 – PDV -->
+    <section id="pdv" class="tab-content">
+        <h2><i class="fas fa-cash-register"></i> PDV – Ponto de Venda</h2>
+        <p class="subtitle">Principal função do operador de caixa. Realize vendas, aplique descontos, divida pagamentos e imprima cupons.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-shopping-cart"></i> Como realizar uma venda</h3>
+            <ol>
+                <li>No menu, clique em <strong>PDV</strong>.</li>
+                <li>Na barra de busca, digite o nome ou código do produto. Pressione <strong>Enter</strong> para adicionar o primeiro item da lista.</li>
+                <li>O item aparecerá no carrinho (lado direito).</li>
+                <li>Para alterar a quantidade, use os botões <strong>+</strong> e <strong>−</strong> ao lado do item.</li>
+                <li>Para remover um item, clique no <strong>✕</strong>.</li>
+                <li>Para aplicar um <strong>desconto</strong>, clique no botão <strong>%</strong> ou pressione <span class="shortcut">Ctrl+D</span>.</li>
+                <li>Se a venda for dividida em mais de uma forma de pagamento, clique em <strong>Split</strong>.</li>
+                <li>Escolha a forma de pagamento: <strong>Dinheiro</strong> (<span class="shortcut">F1</span>), <strong>PIX</strong> (<span class="shortcut">F2</span>), <strong>Crédito</strong> (<span class="shortcut">F3</span>) ou <strong>Débito</strong> (<span class="shortcut">F4</span>).</li>
+                <li>Se for dinheiro, informe o valor recebido – o troco é calculado automaticamente.</li>
+                <li>Clique em <strong>Finalizar Venda</strong> (ou <span class="shortcut">F9</span>).</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela do PDV com carrinho</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/pdv.png" alt="PDV" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-file-invoice-dollar"></i> Venda Fiada</h3>
+            <ul>
+                <li>Clique no botão <strong>Fiado</strong> (ou <span class="shortcut">F5</span>).</li>
+                <li>Selecione um cliente existente ou cadastre um novo.</li>
+                <li>Confirme a venda – o saldo do cliente será atualizado no módulo <strong>Fiados</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-print"></i> Impressão do Cupom</h3>
+            <ul>
+                <li>O sistema tenta imprimir via <strong>Bluetooth</strong> (impressora térmica).</li>
+                <li>Se não houver conexão, gera um <strong>PDF</strong> com todos os detalhes da venda.</li>
+                <li>Para reimprimir, clique no ícone de impressora <i class="fas fa-print"></i> ou <span class="shortcut">F12</span>.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Histórico do Dia</h3>
+            <p>Clique no ícone de <strong>relógio</strong> <i class="fas fa-clock"></i> no topo para ver as vendas do dia atual.</p>
+        </div>
+    </section>
+
+    <!-- ABA 3 – CAIXA -->
+    <section id="caixa" class="tab-content">
+        <h2><i class="fas fa-money-bill-wave"></i> Caixa</h2>
+        <p class="subtitle">Controle financeiro do dia: abertura, movimentações, fechamento e histórico.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-door-open"></i> Abrir o Caixa</h3>
+            <ol>
+                <li>No menu, clique em <strong>Caixa</strong>.</li>
+                <li>Se não houver caixa aberto, você verá o campo <strong>Valor Inicial</strong>.</li>
+                <li>Informe o valor (ex: <code>100,00</code>) e clique em <strong>Abrir Caixa</strong>.</li>
+                <li>O sistema registrará a abertura com data/hora e usuário.</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela de abertura de caixa</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/abrir-caixa.png" alt="Abrir Caixa" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-exchange-alt"></i> Movimentações</h3>
+            <ul>
+                <li><strong>Suplemento</strong> – adiciona dinheiro ao caixa (ex: troco recebido do banco). Informe valor e motivo.</li>
+                <li><strong>Sangria</strong> – retira dinheiro do caixa (ex: pagamento de fornecedor). Informe valor e motivo.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-door-closed"></i> Fechar o Caixa</h3>
+            <ol>
+                <li>No final do expediente, clique em <strong>Fechar Caixa</strong>.</li>
+                <li>Informe o <strong>Valor Real Contado</strong> (dinheiro físico presente no caixa).</li>
+                <li>O sistema calcula automaticamente a <strong>diferença</strong> entre o valor teórico (vendas + suplementos – sangrias) e o contado.</li>
+                <li>Confirme o fechamento – o histórico fica registrado para consulta futura.</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela de fechamento de caixa</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/fechar-caixa.png" alt="Fechar Caixa" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Histórico de Caixas</h3>
+            <p>A tela de Caixa exibe todos os períodos anteriores com resumo de cada abertura e fechamento, permitindo auditoria.</p>
+        </div>
+    </section>
+
+    <!-- ABA 4 – ITENS -->
+    <section id="itens" class="tab-content">
+        <h2><i class="fas fa-boxes"></i> Itens</h2>
+        <p class="subtitle">Cadastro, consulta e edição de produtos/serviços.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-list"></i> Listar Itens</h3>
+            <ul>
+                <li>Acesse <strong>Itens</strong> para ver todos os produtos cadastrados.</li>
+                <li>Use os filtros para buscar por <strong>tipo</strong>, <strong>categoria</strong>, <strong>ativo/inativo</strong>, <strong>estoque baixo</strong> ou <strong>classe ABC</strong>.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da lista de itens com filtros</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/itens.png" alt="Itens" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-plus-circle"></i> Cadastrar um Novo Item</h3>
+            <ol>
+                <li>Clique em <strong>Novo Item</strong>.</li>
+                <li>Preencha os campos obrigatórios: <strong>Nome</strong> e <strong>Preço de Venda</strong>.</li>
+                <li>Opcionalmente: <strong>Código</strong> (gerado automaticamente), <strong>Categoria</strong>, <strong>Unidade</strong>, <strong>Estoque Inicial</strong>, <strong>Estoque Mínimo</strong>, <strong>Imagem</strong> e <strong>Impostos</strong> (ICMS, IPI, PIS, COFINS).</li>
+                <li>Clique em <strong>Salvar</strong>.</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura do formulário de cadastro de item</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/novo-item.png" alt="Novo Item" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-robot"></i> Sugestão de Preço com IA</h3>
+            <ul>
+                <li>Na lista de itens, clique no botão <strong>🤖 Sugerir preço</strong> ao lado do item.</li>
+                <li>A IA analisa margem atual, categoria e estoque para recomendar um novo valor.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ABA 5 – PESSOAS -->
+    <section id="pessoas" class="tab-content">
+        <h2><i class="fas fa-users"></i> Pessoas</h2>
+        <p class="subtitle">Cadastro de clientes, fornecedores e funcionários.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-user-plus"></i> Cadastrar um Cliente</h3>
+            <ol>
+                <li>Clique em <strong>Novo Cliente</strong>.</li>
+                <li>Preencha: <strong>Nome</strong> (obrigatório), <strong>Tipo</strong> (cliente, fornecedor, funcionário), <strong>Documento</strong>, <strong>Telefone</strong>, <strong>E-mail</strong>, <strong>Endereço</strong>.</li>
+                <li>O <strong>Limite de Crédito</strong> é importante para o controle de fiados.</li>
+                <li>Clique em <strong>Salvar</strong>.</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura do formulário de cadastro de cliente</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/novo-cliente.png" alt="Novo Cliente" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-check-double"></i> Quitar Débito de um Cliente</h3>
+            <ul>
+                <li>Na lista de pessoas, clique no botão <strong>💰 Pagar</strong> ao lado do cliente com saldo.</li>
+                <li>Informe o valor e a forma de pagamento.</li>
+                <li>O sistema registra o pagamento e reduz o saldo.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ABA 6 – TRANSAÇÕES -->
+    <section id="transacoes" class="tab-content">
+        <h2><i class="fas fa-file-invoice"></i> Transações</h2>
+        <p class="subtitle">Histórico completo de todas as vendas, pagamentos e movimentos.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-search"></i> Visualizar e Filtrar</h3>
+            <ul>
+                <li>Acesse <strong>Transações</strong> para ver todo o histórico.</li>
+                <li>Use filtros por <strong>data</strong>, <strong>cliente</strong>, <strong>tipo</strong> (venda, pagamento, etc.) e <strong>forma de pagamento</strong>.</li>
+                <li>O relatório exibe valor, status e usuário responsável.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela de transações com filtros</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/transacoes.png" alt="Transações" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-receipt"></i> Comprovante</h3>
+            <p>Para cada venda, clique no ícone de <strong>recibo</strong> para baixar o PDF do cupom.</p>
+        </div>
+    </section>
+
+    <!-- ABA 7 – ENTREGAS -->
+    <section id="entregas" class="tab-content">
+        <h2><i class="fas fa-truck"></i> Entregas</h2>
+        <p class="subtitle">Gerenciamento de pedidos de entrega.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-plus-circle"></i> Criar uma Entrega</h3>
+            <ol>
+                <li>Clique em <strong>Nova Entrega</strong>.</li>
+                <li>Selecione o cliente (obrigatório) e informe o <strong>endereço</strong>.</li>
+                <li>Opcional: taxa de entrega, data agendada e observações.</li>
+                <li>Clique em <strong>Salvar</strong>.</li>
+            </ol>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura do formulário de nova entrega</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/nova-entrega.png" alt="Nova Entrega" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-edit"></i> Atualizar Status</h3>
+            <ul>
+                <li>Na lista, use os botões: <strong>Iniciar</strong> (muda para "Em Andamento"), <strong>Concluir</strong> (finaliza) ou <strong>Cancelar</strong>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ABA 8 – FIDELIDADE -->
+    <section id="fidelidade" class="tab-content">
+        <h2><i class="fas fa-crown"></i> Fidelidade</h2>
+        <p class="subtitle">Programa de pontos com níveis Bronze, Prata e Ouro.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-sliders-h"></i> Configuração (Gestor)</h3>
+            <ul>
+                <li>Defina <strong>pontos por real gasto</strong>, <strong>pontos mínimos</strong> e <strong>descontos</strong> para cada nível.</li>
+                <li>Ative ou desative o programa.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-trophy"></i> Visualizar Clientes</h3>
+            <ul>
+                <li>A tela exibe o <strong>Top 10</strong> clientes com mais pontos.</li>
+                <li>Mostra a distribuição de clientes por nível (Bronze, Prata, Ouro).</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela de fidelidade com ranking</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/fidelidade.png" alt="Fidelidade" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABA 9 – ESTOQUE -->
+    <section id="estoque" class="tab-content">
+        <h2><i class="fas fa-warehouse"></i> Estoque</h2>
+        <p class="subtitle">Análise inteligente do estoque com métricas de consumo e previsão.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-chart-simple"></i> Resumo</h3>
+            <ul>
+                <li><strong>Total de itens</strong>, <strong>quantidade em estoque</strong>, <strong>valor total</strong>, <strong>produtos com estoque baixo</strong> e <strong>giro estimado</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-chart-line"></i> Análise Detalhada</h3>
+            <ul>
+                <li><strong>Consumo (30d)</strong> – quantidade vendida no último mês.</li>
+                <li><strong>Previsão (7d)</strong> – estimativa de venda para a semana.</li>
+                <li><strong>Dias de Cobertura</strong> – quantos dias o estoque atual vai durar.</li>
+                <li><strong>Sugestão de Compra</strong> – quantidade recomendada para reposição.</li>
+                <li><strong>Prioridade</strong> – Alta, Média ou Baixa.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela de estoque com análises</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/estoque.png" alt="Estoque" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-file-pdf"></i> Baixar PDF</h3>
+            <p>Clique em <strong>Baixar PDF</strong> para gerar um relatório completo do estoque.</p>
+        </div>
+    </section>
+
+    <!-- ABA 10 – FIADOS -->
+    <section id="fiados" class="tab-content">
+        <h2><i class="fas fa-hand-holding-usd"></i> Fiados</h2>
+        <p class="subtitle">Clientes com saldo devedor – cobrança e pagamento.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-list"></i> Lista de Devedores</h3>
+            <ul>
+                <li>Exibe <strong>nome</strong>, <strong>telefone</strong>, <strong>saldo</strong>, <strong>dias em atraso</strong> e <strong>status</strong> (Em dia, Pendente, Atrasado).</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da lista de fiados</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/fiados.png" alt="Fiados" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-phone"></i> Ações por Cliente</h3>
+            <ul>
+                <li><strong>Cobrar WhatsApp</strong> – envia mensagem com o valor devido.</li>
+                <li><strong>Ligar</strong> – inicia chamada para o telefone do cliente.</li>
+                <li><strong>Pagar</strong> – registra um pagamento parcial ou total.</li>
+                <li><strong>Quitar</strong> – quita o débito integralmente.</li>
+                <li><strong>Recibo Detalhado</strong> – mostra histórico de compras e permite pagamento com recibo.</li>
+                <li><strong>Link de Pagamento</strong> – copia um link para o cliente pagar online (simulação).</li>
+                <li><strong>Agendar Lembrete</strong> – cria um lembrete para cobrar o cliente no futuro.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura das ações do cliente fiado</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/acoes-fiado.png" alt="Ações Fiado" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABA 11 – ASSISTENTE -->
+    <section id="assistente" class="tab-content">
+        <h2><i class="fas fa-robot"></i> Assistente</h2>
+        <p class="subtitle">Chat interativo com IA para tirar dúvidas e obter análises rápidas.</p>
+
+        <div class="card">
+            <h3><i class="fas fa-comment-dots"></i> Comandos Disponíveis</h3>
+            <ul>
+                <li><strong>"Previsão"</strong> – mostra a previsão de vendas para os próximos 7 dias.</li>
+                <li><strong>"Compra"</strong> – lista itens com estoque abaixo do mínimo, sugerindo quantidades a comprar.</li>
+                <li><strong>"Fluxo"</strong> – exibe alerta de fluxo de caixa (saldo atual e projeção para 15 dias).</li>
+                <li><strong>"Estoque"</strong> – mostra produtos críticos (estoque zero ou abaixo do mínimo).</li>
+                <li><strong>"Ajuda"</strong> – lista todos os comandos.</li>
+            </ul>
+            <div class="screenshot">
+                <div class="placeholder">
+                    <i class="fas fa-image"></i>
+                    <span>Insira captura da tela do assistente em ação</span>
+                    <span class="hint">Substitua por: <code>&lt;img src="caminho/assistente.png" alt="Assistente" /&gt;</code></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== RODAPÉ ==================== -->
+    <footer class="footer">
+        <p><i class="fas fa-copyright"></i> 2026 – Sistema de Gestão Universal – Todos os direitos reservados</p>
+        <p style="font-size:0.8rem; margin-top:4px;">Manual do Usuário – Operador de Caixa | v3.1</p>
+    </footer>
+
+</div>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+    (function() {
+        // Seleciona todos os botões de aba e os conteúdos
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        // Função para ativar uma aba específica
+        function activateTab(tabId) {
+            // Remove a classe 'active' de todos os botões e conteúdos
+            tabs.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            // Adiciona 'active' ao botão clicado
+            const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Adiciona 'active' ao conteúdo correspondente
+            const activeContent = document.getElementById(tabId);
+            if (activeContent) activeContent.classList.add('active');
+        }
+
+        // Adiciona evento de clique para cada botão
+        tabs.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                const tabId = this.getAttribute('data-tab');
+                activateTab(tabId);
+                // Atualiza a URL com a âncora (opcional)
+                if (history.pushState) {
+                    history.pushState(null, null, `#${tabId}`);
+                }
+            });
+        });
+
+        // Se houver uma âncora na URL ao carregar a página, ativa a aba correspondente
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+            const validTab = document.querySelector(`.tab-btn[data-tab="${hash}"]`);
+            if (validTab) {
+                activateTab(hash);
+            }
+        }
+
+        // Navegação por teclado (setas esquerda/direita para mudar de aba)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                const activeBtn = document.querySelector('.tab-btn.active');
+                if (!activeBtn) return;
+                const allBtns = Array.from(tabs);
+                const currentIndex = allBtns.indexOf(activeBtn);
+                let newIndex;
+                if (e.key === 'ArrowRight') {
+                    newIndex = (currentIndex + 1) % allBtns.length;
+                } else {
+                    newIndex = (currentIndex - 1 + allBtns.length) % allBtns.length;
+                }
+                const targetTab = allBtns[newIndex].getAttribute('data-tab');
+                activateTab(targetTab);
+                history.pushState(null, null, `#${targetTab}`);
+                e.preventDefault();
+            }
+        });
+
+        // Adiciona suporte a "voltar/avançar" do navegador
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                const validTab = document.querySelector(`.tab-btn[data-tab="${hash}"]`);
+                if (validTab) activateTab(hash);
+            } else {
+                // Se não houver hash, volta para a primeira aba
+                const firstTab = tabs[0].getAttribute('data-tab');
+                activateTab(firstTab);
+            }
+        });
+
+        // Inicializa a primeira aba (caso não haja hash)
+        if (!window.location.hash) {
+            const firstTab = tabs[0].getAttribute('data-tab');
+            activateTab(firstTab);
+        }
+
+        // Mensagem no console para ajudar a adicionar imagens
+        console.log('%c📸 MANUAL DO USUÁRIO', 'font-size: 20px; font-weight: bold;');
+        console.log('%cSubstitua os placeholders pelas capturas de tela reais do seu sistema.', 'font-size: 14px; color: #2563eb;');
+        console.log('Exemplo: <img src="caminho/para/imagem.png" alt="Descrição" />');
+    })();
+</script>
+
+</body>
+</html>
